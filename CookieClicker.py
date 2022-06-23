@@ -19,31 +19,39 @@ def ClickCookie():
     driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.get("https://orteil.dashnet.org/cookieclicker/")
     driver.set_page_load_timeout(30)
+
+###---------MAXIMIZE WINDOW---------###
+    driver.maximize_window()
     driver.find_element_by_id("langSelect-FR").click()
-    sleep(1)
+    sleep(3)
     tempVar = 0
+###---------CHEAT CODE---------###
+    #execute cheat code script in console js
+    #driver.execute_script("Game.Earn(999999999999999999999999999999999)")
+    #sleep(5)
+    #driver.find_element_by_id("storeBulk100").click()
     while (1):
         driver.find_element_by_id("bigCookie").click()
         Products = driver.find_elements_by_xpath("//*[@class='product unlocked enabled']")
-        craftObject = driver.find_elements_by_xpath("//*[@class='crate upgrade']")
+        craftObject = driver.find_elements_by_xpath("//*[@class='crate upgrade enabled']")
         lenghtProduct = len(Products)
         lenghtCraft = len(craftObject)
         try:
             while (lenghtCraft > tempVar):
                 try:
-                    craftObject[lenghtCraft - 1].click()
+                    craftObject[tempVar].click()
                 except:
                     pass
-                lenghtCraft -= 1
+                tempVar += 1
         except:
             pass
+        tempVar = 0
         try:
             Products[lenghtProduct-1].click()
         except:
             pass
+    print("prog stop")
 
-###---------MAXIMIZE WINDOW---------###
-    driver.maximize_window()
 def main():
     driver = ClickCookie()
 
