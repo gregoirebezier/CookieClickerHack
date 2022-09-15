@@ -1,39 +1,45 @@
 #!/usr/bin/python3
 from selenium import webdriver
 from time import sleep
-from decouple import config
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 import pandas as pd
 import warnings
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 
 ###---------REMOVE THE DEPRECATIONWARNING---------###
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 def ClickCookie():
+    service = Service(ChromeDriverManager().install())
     chrome_options = Options()
     #chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver = webdriver.Chrome(service=service, chrome_options=chrome_options)
     driver.get("https://orteil.dashnet.org/cookieclicker/")
     driver.set_page_load_timeout(30)
 
 ###---------MAXIMIZE WINDOW---------###
     driver.maximize_window()
-    driver.find_element_by_id("langSelect-FR").click()
+    sleep(2)
+    try:
+        driver.find_element(By.ID, "langSelect-FR").click()
+    except:
+        pass
     sleep(3)
     tempVar = 0
 ###---------CHEAT CODE---------###
     #execute cheat code script in console js
-    #driver.execute_script("Game.Earn(999999999999999999999999999999999)")
-    #sleep(5)
-    #driver.find_element_by_id("storeBulk100").click()
+    driver.execute_script("Game.Earn(99999999999999999999999999)")
+    sleep(5)
+    driver.find_element(By.ID, "storeBulk100").click()
     while (1):
-        driver.find_element_by_id("bigCookie").click()
-        Products = driver.find_elements_by_xpath("//*[@class='product unlocked enabled']")
-        craftObject = driver.find_elements_by_xpath("//*[@class='crate upgrade enabled']")
+        driver.find_element(By.ID, "bigCookie").click()
+        Products = driver.find_elements(By.XPATH, "//*[@class='product unlocked enabled']")
+        craftObject = driver.find_elements(By.XPATH, "//*[@class='crate upgrade enabled']")
         lenghtProduct = len(Products)
         lenghtCraft = len(craftObject)
         try:
